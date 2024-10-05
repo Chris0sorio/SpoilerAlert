@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+require('dotenv').config();
 
 //Required modules
 const axios = require('axios');

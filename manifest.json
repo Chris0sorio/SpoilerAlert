@@ -5,7 +5,7 @@
     "version": "1.0",
     "action": {
       "default_popup": "frontend/Main.html",
-      "default_icon": "frontend/hello.png"
+      "default_icon": "frontend/camera.png"
     },
     "content_security_policy": {
       "extension_pages": "script-src 'self'; object-src 'self';"

@@ -1,4 +1,3 @@
-/* Set the size of the popup */
 body {
 	width: 300px; 
 	height: 400px; 
@@ -8,54 +7,66 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
-  }
-  
-  button {
+}
+
+.title {
+	width: 100%;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+button {
 	background: cornflowerblue;
 	color: white;
 	padding: 10px;
+	margin-top: 300px;
 	border: none;
 	cursor: pointer;
 	font-size: 14px;
 	align-content: center;
-  }
-  
-  .dropdown-content {
+}
+
+.dropdown-content {
 	display: none;
 	background-color: #f9f9f9;
-	min-width: 200px;
+	position: absolute;
+	min-width: 50px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 1;
 	margin-right: auto;
 	margin-left: auto;
-  }
-  
-  .dropdown-content a {
+}
+
+.dropdown-content a {
 	color: black;
 	padding: 12px 16px;
 	text-decoration: none;
 	display: block;
 	margin-right: auto;
 	margin-left: auto;
-  }
-  
-  .dropdown-content a:hover {
+}
+
+.dropdown-content a:hover {
 	background-color: #f1f1f1;
-  }
-  
-  .show {
 	display: block;
-  }
-  
-  .date-selection {
+}
+
+.show {
+	display: block;
+}
+
+.date-selection {
 	display: flex;
+	position: absolute;
 	align-items: center;
 	gap: 10px;
 	justify-content: center;
-  }
-  
-  .time-selection {
+}
+
+.time-selection {
 	position: relative;
+	position: absolute;
 	display: inline-block;
-  }
+}

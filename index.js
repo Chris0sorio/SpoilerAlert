@@ -3,29 +3,28 @@ require('dotenv').config();
 // Required modules
 const axios = require('axios');
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
 
 // Initialize Express
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY;
 const MONGO_URL = process.env.MONGO_URL;
+const url = "temp";
 
-// Connection to MongoDB
-let db;
+// Connection to MongoDB using Mongoose
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Failed to connect to MongoDB:', err));
 
-console.log("Attempting to connect to MongoDB...");
-
-console.log("MONGO_URL:", MONGO_URL);
-
-MongoClient.connect(MONGO_URL, (err, client) => {
-    if (err) {
-        console.error('Failed to connect to MongoDB:', err);
-        return;
-    }
-    db = client.db('movieCluster');
-    console.log("Connected to MongoDB");
+// Define a schema and model for movies
+const movieSchema = new mongoose.Schema({
+    title: String,
+    release_date: String,
+    // Add other fields as needed
 });
+
+const Movie = mongoose.model('Movie', movieSchema);
 
 // Fetching movies from API and Inserting to Mongo
 app.get('/fetch-movies', async (req, res) => {
@@ -39,8 +38,7 @@ app.get('/fetch-movies', async (req, res) => {
         });
 
         const movies = response.data.results;
-        const collection = db.collection('movieList');
-        await collection.insertMany(movies);
+        await Movie.insertMany(movies);
 
         res.send('Movies data fetched and stored successfully!');
     } catch (error) {

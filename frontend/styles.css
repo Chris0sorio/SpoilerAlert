@@ -1,0 +1,52 @@
+/* Set the size of the popup */
+body {
+	width: 300px; 
+	height: 400px; 
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 10px;
+  }
+  
+  button {
+	background: cornflowerblue;
+	color: white;
+	padding: 10px;
+	border: none;
+	cursor: pointer;
+	font-size: 14px;
+	align-content: center;
+  }
+  
+  .dropdown-content {
+	display: none;
+	background-color: #f9f9f9;
+	min-width: 200px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+  }
+  
+  .dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+  }
+  
+  .dropdown-content a:hover {
+	background-color: #f1f1f1;
+  }
+  
+  .show {
+	display: block;
+  }
+  
+  .date-selection {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+  }
+  
+  .time-selection {
+	position: relative;
+	display: inline-block;
+  }

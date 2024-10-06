@@ -1,47 +1,32 @@
+console.log('Content script loaded');
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'displayMovies') {
+  if (request.action === 'censorTerms') {
     const movies = request.movies;
-    console.log('Movies received in content script:', movies); // Debugging log
+    console.log('Movies received in content script:', movies);
 
     // Collect unique titles, actors, characters, and directors
-    const titles = new Set();
-    const actors = new Set();
-    const characters = new Set();
-    const directors = new Set();
+    const termsToCensor = new Set([
+      ...movies.titles,
+      ...movies.actors,
+      ...movies.characters,
+      ...movies.directors
+    ]);
 
-    movies.forEach(movie => {
-      titles.add(movie.title);
-      movie.actors.forEach(actor => actors.add(actor));
-      movie.characters.forEach(character => characters.add(character));
-      movie.directors.forEach(director => directors.add(director));
-    });
+    // Create a regex pattern to match any of the movie terms
+    const combinedPattern = Array.from(termsToCensor).filter(Boolean).join('|');
+    const termRegex = new RegExp(`\\b(${combinedPattern})\\b`, 'gi');
 
-    // Log unique titles, actors, characters, and directors to the browser's console
-    console.log('Titles:', Array.from(titles).join(', '));
-    console.log('Actors:', Array.from(actors).join(', '));
-    console.log('Characters:', Array.from(characters).join(', '));
-    console.log('Directors:', Array.from(directors).join(', '));
-
-    function censorParagraphs() {
-      // Create a regex pattern to match any of the movie titles, actors, directors, or characters
-      const combinedPattern = [
-        ...titles,
-        ...actors,
-        ...directors,
-        ...characters
-      ].filter(Boolean).join('|');
-      const paragraphRegex = new RegExp(`\\b(${combinedPattern})\\b`, 'i');
-
-      // Traverse all <p> elements and censor paragraphs containing the movie title, actor, director, or character
-      const paragraphs = document.querySelectorAll('p');
-      paragraphs.forEach(paragraph => {
-        if (paragraphRegex.test(paragraph.textContent)) {
-          paragraph.textContent = '****';
-        }
-      });
+    // Traverse all text nodes and censor terms
+    const textNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    while (node = textNodes.nextNode()) {
+      if (termRegex.test(node.textContent)) {
+        // Censor detected terms
+        node.textContent = node.textContent.replace(termRegex, '****');
+      }
     }
 
-    censorParagraphs();
-    sendResponse({ status: 'Censoring complete' }); // Debugging log
+    sendResponse({ status: 'Censoring complete' });
   }
 });

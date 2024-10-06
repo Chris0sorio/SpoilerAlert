@@ -2,10 +2,11 @@
   "manifest_version": 3,
   "name": "Movie Censor Extension",
   "version": "1.0",
-  "description": "Censors paragraphs related to movies from the database.",
+  "description": "Censors movie-related terms from web pages.",
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "scripting"
   ],
   "background": {
     "service_worker": "background.js"

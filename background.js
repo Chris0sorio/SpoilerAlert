@@ -1,32 +1,33 @@
-chrome.runtime.onInstalled.addListener(() => {
-  console.log('Extension installed');
-});
+console.log('Extension installed');
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'fetchMovies') {
-    const { startDate } = request;
-    console.log('Fetching movies for start date:', startDate); // Debugging log
+    const startDate = request.startDate;
+    console.log(`Fetching movies for start date: ${startDate}`);
 
-    fetch(`http://localhost:3000/search-movies?startDate=${startDate}`)
+    // Fetch movies from your backend
+    fetch(`YOUR_BACKEND_URL/movies?startDate=${startDate}`)
       .then(response => response.json())
       .then(data => {
-        console.log('Data fetched from backend:', data); // Debugging log
-
-        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-          if (tabs.length > 0) {
-            chrome.tabs.sendMessage(tabs.id, { action: 'displayMovies', movies: data }, response => {
-              console.log('Message sent to content script:', response); // Debugging log
-            });
-          } else {
-            console.error('No active tab found');
-          }
-        });
+        console.log('Data fetched from backend:', data);
         sendResponse({ movies: data });
       })
       .catch(error => {
         console.error('Error fetching movies:', error);
-        sendResponse({ error: 'Error fetching movies' });
+        sendResponse({ error: 'Failed to fetch movies' });
       });
-    return true; // Will respond asynchronously.
+
+    return true; // Keep the message channel open for sendResponse
+  }
+});
+
+// Listen for tab updates to check if the active tab is valid for content script communication
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete' && tab.url && !tab.url.startsWith('chrome://')) {
+    chrome.tabs.sendMessage(tabId, { action: 'censorTerms', movies: {} }, (response) => {
+      if (chrome.runtime.lastError) {
+        console.error('Error sending message to content script:', chrome.runtime.lastError);
+      }
+    });
   }
 });

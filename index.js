@@ -108,7 +108,33 @@ app.get('/search-movies', async (req, res) => {
     try {
         const movies = await Movie.find(query).exec();
         console.log('Movies found:', movies.length); // Log the number of movies found
-        res.json(movies);
+
+        // Collect unique titles, actors, characters, and directors
+        const titles = new Set();
+        const actors = new Set();
+        const characters = new Set();
+        const directors = new Set();
+
+        movies.forEach(movie => {
+            titles.add(movie.title);
+            movie.actors.forEach(actor => actors.add(actor));
+            movie.characters.forEach(character => characters.add(character));
+            movie.directors.forEach(director => directors.add(director));
+        });
+
+        // Print unique titles, actors, characters, and directors
+        console.log('Titles:', Array.from(titles).join(', '));
+        console.log('Actors:', Array.from(actors).join(', '));
+        console.log('Characters:', Array.from(characters).join(', '));
+        console.log('Directors:', Array.from(directors).join(', '));
+
+        // Send the unique values as the response
+        res.json({
+            titles: Array.from(titles),
+            actors: Array.from(actors),
+            characters: Array.from(characters),
+            directors: Array.from(directors)
+        });
     } catch (error) {
         console.error('Error fetching movies:', error);
         res.status(500).send('Error fetching movies');

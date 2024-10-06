@@ -92,21 +92,29 @@ app.get('/add-movies', async (req, res) => {
 
 // Search movies endpoint
 app.get('/search-movies', async (req, res) => {
+    const { startDate } = req.query;
+    const endDate = '2024-12-31';
+    const query = {};
+
+    if (startDate) {
+        query.release_date = {
+            $gte: startDate,
+            $lte: endDate
+        };
+    }
+
+    console.log('Query:', query); // Log the query
+
     try {
-        const { title, actor, director } = req.query;
-        const query = {};
-
-        if (title) query.title = new RegExp(title, 'i');
-        if (actor) query.actors = new RegExp(actor, 'i');
-        if (director) query.directors = new RegExp(director, 'i');
-
-        const movies = await Movie.find(query);
+        const movies = await Movie.find(query).exec();
+        console.log('Movies found:', movies.length); // Log the number of movies found
         res.json(movies);
     } catch (error) {
-        console.error('Error searching for movies:', error);
-        res.status(500).send('Error searching for movies');
+        console.error('Error fetching movies:', error);
+        res.status(500).send('Error fetching movies');
     }
 });
+
 
 // Start server
 app.listen(PORT, () => {

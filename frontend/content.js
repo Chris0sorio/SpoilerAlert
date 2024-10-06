@@ -1,22 +1,24 @@
-const article = document.querySelector("article");
+chrome.runtime.sendMessage({ action: 'fetchMovies' }, response => {
+    const movies = response.movies;
 
-// `document.querySelector` may return null if the selector doesn't match anything.
-if (article) {
-  const text = article.textContent;
-  const wordMatchRegExp = /[^\s]+/g; // Regular expression
-  const words = text.matchAll(wordMatchRegExp);
-  // matchAll returns an iterator, convert to array to get word count
-  const wordCount = [...words].length;
-  const readingTime = Math.round(wordCount / 200);
-  const badge = document.createElement("p");
-  // Use the same styling as the publish information in an article's header
-  badge.classList.add("color-secondary-text", "type--caption");
-  badge.textContent = `⏱️ ${readingTime} min read`;
+    function censorText() {
+        // Create a regex pattern to match any of the movie titles, actors, directors, or characters
+        const movieTitles = movies.map(movie => movie.title).join('|');
+        const actors = movies.flatMap(movie => movie.actors).join('|');
+        const directors = movies.flatMap(movie => movie.directors).join('|');
+        const characters = movies.flatMap(movie => movie.characters).join('|');
 
-  // Support for API reference docs
-  const heading = article.querySelector("h1");
-  // Support for article docs with date
-  const date = article.querySelector("time")?.parentNode;
+        const combinedPattern = [movieTitles, actors, directors, characters].filter(Boolean).join('|');
+        const paragraphRegex = new RegExp(`\\b(${combinedPattern})\\b`, 'i');
 
-  (date ?? heading).insertAdjacentElement("afterend", badge);
-}
+        // Traverse all <p> elements and censor paragraphs containing the movie title, actor, director, or character
+        const paragraphs = document.querySelectorAll('p');
+        paragraphs.forEach(paragraph => {
+            if (paragraphRegex.test(paragraph.textContent)) {
+                paragraph.textContent = '****';
+            }
+        });
+    }
+
+    censorText();
+});

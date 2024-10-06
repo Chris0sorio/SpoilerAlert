@@ -11,4 +11,21 @@ document.getElementById('fetch-movies').addEventListener('click', () => {
       document.getElementById('status').textContent = 'Please select a start date.';
     }
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const startDateInput = document.getElementById('start-date');
   
+    const savedDate = localStorage.getItem('savedStartDate');
+    if (savedDate) {
+      startDateInput.value = savedDate;
+    }
+  
+    startDateInput.addEventListener('change', function() {
+      const newDate = this.value;
+      const savedDate = localStorage.getItem('savedStartDate');
+  
+      if (!savedDate || new Date(newDate) > new Date(savedDate)) {
+        localStorage.setItem('savedStartDate', newDate);
+      }
+    });
+  });

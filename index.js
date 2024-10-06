@@ -23,7 +23,7 @@ const movieSchema = new mongoose.Schema({
     actors: [String], // Array of actor names
     characters: [String], // Array of character names
     directors: [String], // Array of director names
-    // Add other fields as needed
+
 });
 
 const Movie = mongoose.model('Movie', movieSchema);

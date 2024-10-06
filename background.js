@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const startDate = request.startDate;
     console.log(`Fetching movies for start date: ${startDate}`);
 
-    // Fetch movies from your backend
+    // Fetch movies from backend
     fetch(`http://localhost:3000/search-movies?startDate=${startDate}`)
       .then(response => response.json())
       .then(data => {

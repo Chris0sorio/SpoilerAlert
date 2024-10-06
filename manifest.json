@@ -1,16 +1,34 @@
 {
-    "manifest_version": 3,
-    "name": "Spoiler Alert",
-    "description": "Attempts to block any spoilers on a web-page",
-    "version": "1.0",
-    "action": {
-      "default_popup": "frontend/Main.html",
-      "default_icon": "frontend/camera.png"
-    },
-    "content_security_policy": {
-      "extension_pages": "script-src 'self'; object-src 'self';"
-    },
-    "permissions": [
-      "storage"
-    ]
+  "manifest_version": 3,
+  "name": "Spoiler Alert",
+  "description": "Attempts to block any spoilers on a web-page",
+  "version": "1.0",
+  "action": {
+    "default_popup": "Main.html",
+    "default_icon": "hello.png"
+  },
+  "manifest_version": 3,
+  "name": "Spoiler Alert",
+  "description": "Attempts to block any spoilers on a web-page",
+  "version": "1.0",
+  "action": {
+    "default_popup": "frontend/Main.html",
+    "default_icon": "frontend/camera.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": [
+        "https://*",
+        "http://*"
+      ]
+    }
+  ]
 }
+

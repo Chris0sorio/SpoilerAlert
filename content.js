@@ -7,10 +7,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Collect unique titles, actors, characters, and directors
     const termsToCensor = new Set([
-      ...movies.titles,
-      ...movies.actors,
-      ...movies.characters,
-      ...movies.directors
+      ...(movies.titles || []),
+      ...(movies.actors || []),
+      ...(movies.characters || []),
+      ...(movies.directors || [])
     ]);
 
     // Create a regex pattern to match any of the movie terms

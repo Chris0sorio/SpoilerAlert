@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log(`Fetching movies for start date: ${startDate}`);
 
     // Fetch movies from your backend
-    fetch(`YOUR_BACKEND_URL/movies?startDate=${startDate}`)
+    fetch(`http://localhost:3000/search-movies?startDate=${startDate}`)
       .then(response => response.json())
       .then(data => {
         console.log('Data fetched from backend:', data);
@@ -27,6 +27,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     chrome.tabs.sendMessage(tabId, { action: 'censorTerms', movies: {} }, (response) => {
       if (chrome.runtime.lastError) {
         console.error('Error sending message to content script:', chrome.runtime.lastError);
+      } else {
+        console.log('Response from content script:', response);
       }
     });
   }

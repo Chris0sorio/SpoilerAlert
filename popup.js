@@ -4,8 +4,16 @@ document.getElementById('fetch-movies').addEventListener('click', () => {
 
   if (startDate) {
     chrome.runtime.sendMessage({ action: 'fetchMovies', startDate }, response => {
-      console.log('Response from background:', response);
-      document.getElementById('status').textContent = 'Movies fetched and terms censored!';
+      if (response.error) {
+        console.error('Error:', response.error);
+        document.getElementById('status').textContent = 'Error fetching movies.';
+      } else {
+        console.log('Response from background:', response);
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          chrome.tabs.sendMessage(tabs[0].id, { action: 'censorTerms', movies: response.movies });
+        });
+        document.getElementById('status').textContent = 'Movies fetched and terms censored!';
+      }
     });
   } else {
     document.getElementById('status').textContent = 'Please select a start date.';

@@ -139,3 +139,7 @@ button:hover {
 .dropbtn {
     margin: 5px;
 }
+
+.censored-text {
+    visibility: hidden; /* Hides the text without collapsing the space */
+}

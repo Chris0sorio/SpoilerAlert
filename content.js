@@ -5,7 +5,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const movies = request.movies;
     console.log('Movies received in content script:', movies);
 
-    // Collect unique titles, actors, characters, and directors
     const termsToCensor = new Set([
       ...(movies.titles || []),
       ...(movies.actors || []),
@@ -13,17 +12,36 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       ...(movies.directors || [])
     ]);
 
-    // Create a regex pattern to match any of the movie terms
-    const combinedPattern = Array.from(termsToCensor).filter(Boolean).join('|');
-    const termRegex = new RegExp(`\\b(${combinedPattern})\\b`, 'gi');
+    console.log('Terms to censor:', Array.from(termsToCensor));
 
-    // Traverse all text nodes and censor terms
+    const combinedPattern = Array.from(termsToCensor)
+      .filter(Boolean)
+      .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) // Escape special regex characters
+      .join('|');
+
+    // Match sentences containing the terms
+    const termRegex = new RegExp(`\\b(${combinedPattern})(?: \\(.*?\\))?\\b`, 'gi');
+
+    console.log('Regex pattern:', termRegex);
+
+    // Traverse all text nodes
     const textNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
     let node;
+
     while (node = textNodes.nextNode()) {
-      if (termRegex.test(node.textContent)) {
-        // Censor detected terms
-        node.textContent = node.textContent.replace(termRegex, '****');
+      const originalText = node.textContent;
+
+      // Replace only if a term is found
+      if (termRegex.test(originalText)) {
+        console.log(`Censoring: "${originalText}"`);
+
+        // Replace the matches with asterisks of the same length
+        const censoredText = originalText.replace(termRegex, match => {
+          return '*'.repeat(match.length); // Replace with asterisks
+        });
+
+        // Update the node's text
+        node.textContent = censoredText;
       }
     }
 

@@ -40,16 +40,41 @@ h1 {
     margin-bottom: 10px;
 }
 
+input[type="date"] {
+    padding: 5px;
+    margin: 5px 0;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-family: "Be Vietnam Pro", sans-serif;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="date"]:focus {
+    border-color: cornflowerblue;
+    box-shadow: 0 0 5px rgba(100, 149, 237, 0.5);
+    outline: none;
+}
+
 button {
     background: cornflowerblue;
     color: white;
+    transition: transform 0.3s;
     padding: 10px;
-    margin-top: 50px;
+    margin-top: 240px;
+    position: absolute;
     border: none;
     cursor: pointer;
     font-family: "Be Vietnam Pro", sans-serif;
     font-size: 10px;
     align-content: center;
+}
+
+button:hover {
+    transform: scale(1.15);
 }
 
 .dropdown-content {
@@ -87,6 +112,19 @@ button {
     align-items: center;
     gap: 10px;
 }
+
+#status {
+    font-family: "Be Vietnam Pro", sans-serif;
+    font-size: 13px;
+    color: #4A90E2;
+    text-align: center;
+    transition: background-color 0.3s ease-in, color 0.4s ease-in;
+}
+
+#status:hover {
+    color: #133432;
+}
+
 
 .time-selection {
     position: relative;

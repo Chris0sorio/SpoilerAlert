@@ -13,7 +13,7 @@ body {
     margin: 0;
     padding: 10px;
     display: flex;
-    background-image: url('./background.svg');
+    background-image: url('./animate.svg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat; 

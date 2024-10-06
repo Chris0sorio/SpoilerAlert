@@ -6,12 +6,12 @@
     font-style: normal;
 }
 
-body {
-    width: 400px; 
-    height: 500px; 
-    font-family: "Be Vietnam Pro", sans-serif;
+html, body {
     margin: 0;
-    padding: 10px;
+    padding: 0;
+    width: 300px;
+    height: 300px;
+    font-family: "Be Vietnam Pro", sans-serif;
     display: flex;
     flex-direction: column;
     background-image: url('./background.svg');
@@ -23,12 +23,11 @@ body {
 
 h1 {
     color: #fff;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 600;
     line-height: 1.2;
     margin-bottom: 20px;
-  }
-  
+}
 
 .title {
     width: 100%;
@@ -45,7 +44,7 @@ button {
     background: cornflowerblue;
     color: white;
     padding: 10px;
-    margin-top: 300px;
+    margin-top: 50px;
     border: none;
     cursor: pointer;
     font-family: "Be Vietnam Pro", sans-serif;

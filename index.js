@@ -29,12 +29,13 @@ const movieSchema = new mongoose.Schema({
 const Movie = mongoose.model('Movie', movieSchema);
 
 // Fetching movies from API and Inserting to Mongo
-app.get('/fetch-movies', async (req, res) => {
+app.get('/add-movies', async (req, res) => {
     try {
         let page = 1;
         let totalPages = 1;
+        const maxPages = 50;
 
-        while (page <= totalPages) {
+        while (page <= totalPages && page <= maxPages) {
             const response = await axios.get('https://api.themoviedb.org/3/discover/movie', {
                 params: {
                     api_key: API_KEY,
@@ -45,6 +46,8 @@ app.get('/fetch-movies', async (req, res) => {
                 }
             });
 
+            totalPages = response.data.total_pages;
+
             const movies = await Promise.all(response.data.results.map(async (movie) => {
                 const movieDetails = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
                     params: {
@@ -54,24 +57,35 @@ app.get('/fetch-movies', async (req, res) => {
                 });
 
                 const details = movieDetails.data;
-                return {
-                    title: details.title,
-                    release_date: details.release_date,
-                    actors: details.credits.cast.map(cast => cast.name),
-                    characters: details.credits.cast.map(cast => cast.character),
-                    directors: details.credits.crew.filter(crew => crew.job === 'Director').map(director => director.name)
-                };
+                const existingMovie = await Movie.findOne({ title: details.title });
+
+                if (!existingMovie) {
+                    return {
+                        title: details.title,
+                        release_date: details.release_date,
+                        actors: details.credits.cast.map(cast => cast.name),
+                        characters: details.credits.cast.map(cast => cast.character),
+                        directors: details.credits.crew.filter(crew => crew.job === 'Director').map(director => director.name)
+                    };
+                }
+                return null;
             }));
 
-            totalPages = response.data.total_pages;
+            const filteredMovies = movies.filter(movie => movie !== null);
+            await Movie.insertMany(filteredMovies, { ordered: false });
 
-            await Movie.insertMany(movies);
             page++;
         }
 
         res.send('Movies data fetched and stored successfully!');
     } catch (error) {
-        console.error('Error fetching data from TMDB API:', error);
+        if (error.response && error.response.status === 400) {
+            console.error('Bad Request:', error.response.data);
+        } else if (error.code === 11000) {
+            console.warn('Duplicate key error:', error.message);
+        } else {
+            console.error('Error fetching data from TMDB API:', error);
+        }
         res.status(500).send('Error fetching data from TMDB API');
     }
 });

@@ -1,72 +1,79 @@
 body {
-	width: 300px; 
-	height: 400px; 
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 10px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+    width: 300px; 
+    height: 400px; 
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .title {
-	width: 100%;
-	text-align: center;
-	font-size: 18px;
-	font-weight: bold;
-	margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 button {
-	background: cornflowerblue;
-	color: white;
-	padding: 10px;
-	margin-top: 300px;
-	border: none;
-	cursor: pointer;
-	font-size: 14px;
-	align-content: center;
+    background: cornflowerblue;
+    color: white;
+    padding: 10px;
+    margin-top: 300px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    align-content: center;
 }
 
 .dropdown-content {
-	display: none;
-	background-color: #f9f9f9;
-	position: absolute;
-	min-width: 50px;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	z-index: 1;
-	margin-right: auto;
-	margin-left: auto;
+    display: none;
+    background-color: #f9f9f9;
+    position: absolute;
+    min-width: 50px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .dropdown-content a {
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-	margin-right: auto;
-	margin-left: auto;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .dropdown-content a:hover {
-	background-color: #f1f1f1;
-	display: block;
+    background-color: #f1f1f1;
+    display: block;
 }
 
 .show {
-	display: block;
+    display: block;
 }
 
 .date-selection {
-	display: flex;
-	position: absolute;
-	align-items: center;
-	gap: 10px;
-	justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .time-selection {
-	position: relative;
-	position: absolute;
-	display: inline-block;
+    position: relative;
+    display: inline-block;
+}
+
+.date-changer {
+    display: none;
+    margin-top: 10px;
+}
+
+.dropbtn {
+    margin: 5px;
 }

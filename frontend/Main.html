@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="styles.css">
   <!-- JavaScript file -->
   <script src="background.js"></script>
-  <script src ="content.js"></script>
+  <script src="content.js"></script>
 </head>
 <body>
   <div class="title">
@@ -21,6 +21,15 @@
         <a id="OneWeek">One Week</a>
         <a id="OneMonth">One Month</a>
       </div>
+    </div>
+    <button type="button" id="openDateChanger" class="dropbtn">Change Date</button>
+    <div id="dateChanger" class="date-changer">
+      <label for="yearDropdown">Year:</label>
+      <select id="yearDropdown"></select>
+      <label for="monthDropdown">Month:</label>
+      <select id="monthDropdown"></select>
+      <label for="dayDropdown">Day:</label>
+      <select id="dayDropdown"></select>
     </div>
   </div>
   <p id="DateCurrentlyOn">Selected Mode: None</p>

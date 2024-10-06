@@ -1,25 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "Spoiler Alert",
-  "description": "Attempts to block any spoilers on a web-page",
+  "name": "Movie Censor Extension",
   "version": "1.0",
-  "action": {
-    "default_popup": "frontend/Main.html",
-    "default_icon": "frontend/camera.png"
-  },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self';"
-  },
+  "description": "Censors paragraphs related to movies from the database.",
   "permissions": [
+    "activeTab",
     "storage"
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
-      "js": ["frontend/content.js"],
-      "matches": [
-        "https://*/*",
-        "http://*/*"
-      ]
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
     }
-  ]
+  ],
+  "action": {
+    "default_popup": "main.html",
+    "default_icon": "frontend/camera.png"
+  }
 }
